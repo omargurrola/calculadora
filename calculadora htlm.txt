@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Calculadora de Piora</title>
+  <style>
+    .item {
+      margin-bottom: 144px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Calculadora de Piora</h1>
+
+  <div class="item">
+    <h2>Teste dos 9 Pinos</h2>
+    <form>
+      <label for="pino9_anterior">Resultado Anterior:</label>
+      <input type="number" id="pino9_anterior">
+      <br>
+      <label for="pino9_atual">Resultado Atual:</label>
+      <input type="number" id="pino9_atual">
+      <br>
+      <button type="button" onclick="calcularPiora('pino9')">Calcular Piora</button>
+    </form>
+    <p id="pino9_piora"></p>
+    <p id="pino9_resultado"></p>
+  </div>
+
+  <div class="item">
+    <h2>Teste dos 25 Pés</h2>
+    <form>
+      <label for="pes25_anterior">Resultado Anterior:</label>
+      <input type="number" id="pes25_anterior">
+      <br>
+      <label for="pes25_atual">Resultado Atual:</label>
+      <input type="number" id="pes25_atual">
+      <br>
+      <button type="button" onclick="calcularPiora('pes25')">Calcular Piora</button>
+    </form>
+    <p id="pes25_piora"></p>
+    <p id="pes25_resultado"></p>
+  </div>
+
+  <div class="item">
+    <h2>SDMT (Symbol Digit Modality Test)</h2>
+    <form>
+      <label for="sdmt_anterior">Resultado Anterior:</label>
+      <input type="number" id="sdmt_anterior">
+      <br>
+      <label for="sdmt_atual">Resultado Atual:</label>
+      <input type="number" id="sdmt_atual">
+      <br>
+      <button type="button" onclick="calcularPiora('sdmt')">Calcular Piora</button>
+    </form>
+    <p id="sdmt_piora"></p>
+    <p id="sdmt_resultado"></p>
+  </div>
+
+  <div class="item">
+    <h2>EDSS</h2>
+    <form>
+      <label for="edss_anterior">Resultado Anterior:</label>
+      <input type="number" id="edss_anterior">
+      <br>
+      <label for="edss_atual">Resultado Atual:</label>
+      <input type="number" id="edss_atual">
+      <br>
+      <button type="button" onclick="calcularPiora('edss')">Calcular Piora</button>
+    </form>
+    <p id="edss_piora"></p>
+    <p id="edss_resultado"></p>
+  </div>
+  <div class="item">
+    <h2>Teste do Contraste</h2>
+    <form>
+      <label for="contraste_anterior">Resultado Anterior:</label>
+      <input type="number" id="contraste_anterior">
+      <br>
+      <label for="contraste_atual">Resultado Atual:</label>
+      <input type="number" id="contraste_atual">
+      <br>
+      <button type="button" onclick="calcularPiora('contraste')">Calcular Piora</button>
+    </form>
+    <p id="contraste_piora"></p>
+    <p id="contraste_resultado"></p>
+  </div>
+
+  <script>
+    function calcularPiora(item) {
+      var valorAnterior = parseFloat(document.getElementById(item + "_anterior").value);
+      var valorAtual = parseFloat(document.getElementById(item + "_atual").value);
+
+      var piora = ((valorAtual - valorAnterior) / valorAnterior) * 100;
+
+      document.getElementById(item + "_piora").innerText = "Piora: " + piora.toFixed(2) + "%";
+
+      if (item === "edss") {
+        verificarProgressaoEDSS(valorAnterior, valorAtual);
+      } else if (item === "contraste") {
+        verificarProgressaoContraste(valorAnterior, valorAtual);
+      } else {
+        verificarProgressao();
+      }
+    }
+
+    function verificarProgressao() {
+      var teste9Pinos = parseFloat(document.getElementById("pino9_piora").innerText.split(": ")[1]);
+      var teste25Pes = parseFloat(document.getElementById("pes25_piora").innerText.split(": ")[1]);
+      var sdmtPiora = parseFloat(document.getElementById("sdmt_piora").innerText.split(": ")[1]);
+
+      if (teste9Pinos >= 20) {
+        document.getElementById("pino9_resultado").innerText = "Provável forma progressiva da doença";
+      } else {
+        document.getElementById("pino9_resultado").innerText = "Sem sinais de progressão";
+      }
+
+      if (teste25Pes >= 20) {
+        document.getElementById("pes25_resultado").innerText = "Provável forma progressiva da doença";
+      } else {
+        document.getElementById("pes25_resultado").innerText = "Sem sinais de progressão";
+      }
+
+      if (sdmtPiora <= -10) {
+        document.getElementById("sdmt_resultado").innerText = "Provável forma progressiva da doença";
+      } else {
+        document.getElementById("sdmt_resultado").innerText = "Sem sinais de progressão";
+      }
+    }
+
+    function verificarProgressaoEDSS(valorAnterior, valorAtual) {
+      var resultado = document.getElementById("edss_resultado");
+
+      if (valorAnterior <= 5.5 && valorAtual - valorAnterior > 1) {
+        resultado.innerText = "Provável forma progressiva da doença";
+      } else if (valorAnterior >= 6 && valorAtual - valorAnterior >= 0.5) {
+        resultado.innerText = "Provável forma progressiva da doença";
+      } else {
+        resultado.innerText = "Sem sinais de progressão";
+      }
+    }
+
+    function verificarProgressaoContraste(valorAnterior, valorAtual) {
+      var resultado = document.getElementById("contraste_resultado");
+
+      if (valorAnterior - valorAtual >= 7) {
+        resultado.innerText = "Provável forma progressiva da doença";
+      } else {
+        resultado.innerText = "Sem sinais de progressão";
+      }
+    }
+  </script>
+</body>
+</html>
